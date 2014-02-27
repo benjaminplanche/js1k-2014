@@ -32,7 +32,49 @@
 		</script>
 		<script>
 // start of submission //
-SCRIPT
+var nbCellsL = 50;
+var nbCellsH = 50;
+var cells = cellsTemp = [];
+
+function run() {
+
+	// Draw:
+	var s = '';
+	for( var j=1; j<(nbCellsH-1); j++ ) {
+		for( var i=1; i<(nbCellsL-1); i++ ) {
+			s+= cells[nbCellsL*j+i];
+		}
+		s+='<br/>';
+		b.innerHTML = s;
+	}
+	
+	// Iterate:
+    cellsTemp = cells;
+
+    for( var j=1; j<(nbCellsH-1); j++ )
+		for( var i=1; i<(nbCellsL-1); i++ ) {
+			var off = nbCellsL*j+i;
+
+			var k = cellsTemp[ off-nbCellsL+1 ] + cellsTemp[ off-nbCellsL+0 ] +	cellsTemp[ off-nbCellsL-1 ] +
+						  cellsTemp[ off  +1 ] +                     				 	cellsTemp[ off  -1 ] +
+						  cellsTemp[ off+nbCellsL+1 ] + cellsTemp[ off+nbCellsL+0 ] + 	cellsTemp[ off+nbCellsL-1 ];
+
+			cells[off] = ((cellsTemp[off] && (k==3 || k==2)) || (!cellsTemp[off] && (k==3)))?1:0;
+		}
+	
+	// Keep on:
+	requestAnimationFrame(run);
+}
+
+// Init
+for( var j=10; j<(nbCellsH-10); j++ )
+	for( var i=10; i<(nbCellsL-10); i++ ) {
+		cells[nbCellsL*j+i] = Math.random()+.5|0;
+	}
+
+// Run
+run();
+	
 // end of submission //
 		</script>
 	</body>
